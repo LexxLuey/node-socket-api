@@ -4,7 +4,7 @@ services:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - ${APP_PORT}:3000
     env_file:
       - .env
     depends_on:
@@ -12,10 +12,14 @@ services:
 
   postgres:
     image: "postgres:14.5"
-    ports:
-      - "5432:5432"
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "blockchain"
-
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    tty: true
+    ports:
+      - ${DB_PORT}:5432

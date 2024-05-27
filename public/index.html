@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Test</title>
+</head>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Test</title>
+</head>
+
+<body>
+    <h1>WebSocket Test</h1>
+    <p id="status">Connecting...</p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2NzkwMTU2LCJleHAiOjE3MTY3OTM3NTZ9.tNe-3VwjyE_C5h3c-wTqHutWretFDzyHK1CIxPsDAls"; // Replace with a valid JWT token
+        const socket = io("http://localhost:3000", {
+            auth: {
+                token,
+            },
+        });
+
+        socket.on("connect", () => {
+            document.getElementById("status").innerText = "Connected";
+            console.log("Connected to WebSocket server");
+
+            // Test subscription
+            socket.emit("subscribe", { type: "all" });
+            // socket.emit("subscribe", { type: "address", address: "0xYourAddressHere" });
+            // socket.emit("subscribe", { type: "sender", address: "0xYourAddressHere" });
+            // socket.emit("subscribe", { type: "receiver", address: "0xYourAddressHere" });
+            // socket.emit("subscribe", { type: "range", range: "0-100" });
+        });
+
+        socket.on("disconnect", () => {
+            document.getElementById("status").innerText = "Disconnected";
+            console.log("Disconnected from WebSocket server");
+        });
+
+        socket.on("connect_error", (err) => {
+            document.getElementById("status").innerText =
+                "Connection Error: " + err.message;
+        });
+    </script>
+</body>
+
+</html>
